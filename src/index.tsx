@@ -36,9 +36,7 @@ const config: Configuration = {
 /**
  * Demo scene URL for the placeholders video editor.
  */
-const SCENE_URL = resolveAssetPath(
-  '/cases/placeholders-video/example.scene'
-);
+const SCENE_URL = resolveAssetPath('/cases/placeholders-video/example.scene');
 
 // ============================================================================
 // Initialize React Application

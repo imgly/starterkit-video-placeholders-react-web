@@ -1,5 +1,5 @@
 /**
- * CE.SDK Video Placeholders Editor Starterkit - React Entry Point
+ * CE.SDK Placeholders Video Editor Starterkit - React Entry Point
  *
  * Demonstrates the CE.SDK placeholder feature for video template creation.
  * Placeholders allow template creators to define editable regions that
@@ -8,25 +8,26 @@
  * @see https://img.ly/docs/cesdk/js/features/placeholders/
  */
 
-import type { Configuration } from '@cesdk/cesdk-js';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import type { Configuration } from '@cesdk/cesdk-js';
 
 import App from './app/App';
-import { resolveAssetPath } from './imgly/resolveAssetPath';
+import { resolveAssetPath } from './resolveAssetPath';
 
 // ============================================================================
-// Configuration
+// Editor Configuration
 // ============================================================================
 
-const config: Configuration = {
-  // Unique user identifier for analytics (customize for your app)
-  userId: 'starterkit-video-placeholders-editor-user'
+/**
+ * Static CE.SDK configuration.
+ * Role-specific settings are applied in the init functions.
+ */
+export const editorConfig: Configuration = {
+  userId: 'starterkit-video-placeholders-user',
 
-  // Local assets (uncomment and set path for self-hosted assets)
-  // baseURL: `/assets/`,
+  // Local assets for development
 
-  // License key (required for production)
-  // license: 'YOUR_LICENSE_KEY',
 };
 
 // ============================================================================
@@ -36,10 +37,12 @@ const config: Configuration = {
 /**
  * Demo scene URL for the placeholders video editor.
  */
-const SCENE_URL = resolveAssetPath('/cases/placeholders-video/example.scene');
+export const SCENE_URL = resolveAssetPath(
+  '/cases/placeholders-video/example.scene'
+);
 
 // ============================================================================
-// Initialize React Application
+// React App Bootstrap
 // ============================================================================
 
 const container = document.getElementById('root');
@@ -48,4 +51,8 @@ if (!container) {
 }
 
 const root = createRoot(container);
-root.render(<App config={config} sceneUrl={SCENE_URL} />);
+root.render(
+  <StrictMode>
+    <App config={editorConfig} sceneUrl={SCENE_URL} />
+  </StrictMode>
+);

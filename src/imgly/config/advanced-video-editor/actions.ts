@@ -76,6 +76,26 @@ import type CreativeEditorSDK from '@cesdk/cesdk-js';
  */
 export function setupActions(cesdk: CreativeEditorSDK): void {
   // ============================================================================
+  // INSPECTOR ACTIONS
+  // ============================================================================
+
+  // #region Inspector Close Action
+  // Closing the inspector also deselects, so selecting an element opens it again.
+  cesdk.actions.register('inspector.close', () => {
+    cesdk.ui.closePanel('//ly.img.panel/inspector');
+    const selected = cesdk.engine.block.findAllSelected();
+    // A 'pageTitle' block is the page name above the canvas, selected while it is edited.
+    // Keep it selected, so closing the inspector does not end the edit.
+    if (
+      selected.length === 1 &&
+      cesdk.engine.block.getKind(selected[0]) === 'pageTitle'
+    )
+      return;
+    selected.forEach((block) => cesdk.engine.block.setSelected(block, false));
+  });
+  // #endregion
+
+  // ============================================================================
   // SCENE MANAGEMENT ACTIONS
   // Save and load scene files for editing workflows
   // ============================================================================
@@ -169,7 +189,7 @@ export function setupActions(cesdk: CreativeEditorSDK): void {
   // #region Upload File Action
   // Process uploaded files and create local blob URLs
   // Called when users upload videos, images, or audio files
-  cesdk.actions.register('uploadFile', (file, onProgress, context) => {
+  cesdk.actions.register('uploadFile', (file, _onProgress, context) => {
     return cesdk.utils.localUpload(file, context);
   });
   // #endregion
